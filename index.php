@@ -7,37 +7,37 @@ $tasks = [
      "text" => "Собеседование в IT компании",
      "date" => "01.12.2019",
      "project" => "Работа",
-     "is_completed" => "Нет"
+     "completed" => false
    ],
    [
      "text" => "Выполнить тестовое задание",
      "date" => "25.12.2019",
      "project" => "Работа",
-     "is_completed" => "Нет"
+     "completed" => false
    ],
    [
      "text" => "Сделать задание первого раздела",
      "date" => "21.12.2019",
      "project" => "Учеба",
-     "is_completed" => "Да"
+     "completed" => true
    ],
    [
      "text" => "Встреча с другом",
      "date" => "22.12.2019",
      "project" => "Входящие",
-     "is_completed" => "Нет"
+     "completed" => false
    ],
    [
      "text" => "Купить корм для кота",
-     "date" => "Нет",
+     "date" => null,
      "project" => "Домашние дела",
-     "is_completed" => "Нет"
+     "completed" => false
    ],
    [
      "text" => "Заказать пиццу",
-     "date" => "Нет",
+     "date" => null,
      "project" => "Домашние дела",
-     "is_completed" => "Нет"
+     "completed" => false
    ]
 ];
 ?>
@@ -117,33 +117,15 @@ $tasks = [
 
                     <label class="checkbox">
                         <!--добавить сюда аттрибут "checked", если переменная $show_complete_tasks равна единице-->
-                        <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_complete_tasks === 1): ?>checked<?php endif; ?>>
+                        <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_complete_tasks): ?>checked<?php endif; ?>>
                         <span class="checkbox__text">Показывать выполненные</span>
                     </label>
                 </div>
 
                 <table class="tasks">
-                  <?php if ($show_complete_tasks === 1): ?>
                     <?php foreach ($tasks as $key => $value): ?>
-                      <tr class="tasks__item task <?php if ($value["is_completed"] === "Да"): ?>task--completed<?php endif; ?>">
-                          <td class="task__select">
-                              <label class="checkbox task__checkbox">
-                                  <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                  <span class="checkbox__text"><?=$value["text"];?></span>
-                              </label>
-                          </td>
-
-                          <td class="task__file">
-                              <a class="download-link" href="#">Home.psd</a>
-                          </td>
-
-                          <td class="task__date"><?=$value["date"];?></td>
-                      </tr>
-                    <?php endforeach; ?>
-                  <?php else: ?>
-                    <?php foreach ($tasks as $key => $value): ?>
-                      <?php if ($value["is_completed"] === "Нет"): ?>
-                        <tr class="tasks__item task">
+                      <?php if ($show_complete_tasks || !$value["completed"]): ?>
+                        <tr class="tasks__item task <?php if ($value["completed"]): ?>task--completed<?php endif; ?>">
                             <td class="task__select">
                                 <label class="checkbox task__checkbox">
                                     <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
@@ -159,7 +141,6 @@ $tasks = [
                         </tr>
                       <?php endif; ?>
                     <?php endforeach; ?>
-                  <?php endif; ?>
                 </table>
             </main>
         </div>
