@@ -15,8 +15,7 @@ function include_template($name, $data) {
 
     return $result;
 }
-function count_projects($tasks, $project_name)
-{
+function count_projects($tasks, $project_name) {
   $count = 0;
   foreach ($tasks as $value) {
     if ($value["project"] === $project_name) {
@@ -24,5 +23,11 @@ function count_projects($tasks, $project_name)
     }
   }
   return $count;
+}
+function count_hours ($date) {
+  $cur_date = strtotime(date("d.m.Y H:i"));
+  $task_date = strtotime($date);
+  $diff = ($task_date - $cur_date) / 3600;
+  return $diff;
 }
 ?>
