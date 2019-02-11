@@ -19,7 +19,8 @@ CREATE TABLE tasks (
   deadline TIMESTAMP NULL,
   file CHAR(64),
   id_user INT NOT NULL,
-  id_project INT NOT NULL
+  id_project INT NOT NULL,
+  INDEX (name)
 );
 
 CREATE TABLE users (
@@ -27,5 +28,6 @@ CREATE TABLE users (
 	name CHAR(64) NOT NULL,
   date_register TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   email CHAR(128) NOT NULL UNIQUE,
-  password CHAR(64) NOT NULL
+  password CHAR(64) NOT NULL,
+  INDEX (name)
 );
