@@ -24,11 +24,11 @@
 <table class="tasks">
     <?php foreach ($tasks as $key => $value): ?>
       <?php if ($show_complete_tasks || !$value["completed"]): ?>
-        <tr class="tasks__item task <?php if ($value["completed"]): ?>task--completed<?php endif; ?><?php if (count_hours($value["date"]) <= 24): ?>task--important<?php endif; ?>">
+        <tr class="tasks__item task <?php if ($value["completed"]): ?>task--completed<?php endif; ?><?php if (count_hours($value["deadline"]) <= 24): ?>task--important<?php endif; ?>">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
                     <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                    <span class="checkbox__text"><?=htmlspecialchars($value["text"]);?></span>
+                    <span class="checkbox__text"><?=htmlspecialchars($value["name"]);?></span>
                 </label>
             </td>
 
@@ -36,7 +36,7 @@
                 <a class="download-link" href="#">Home.psd</a>
             </td>
 
-            <td class="task__date"><?=$value["date"];?></td>
+            <td class="task__date"><?=$value["deadline"];?></td>
         </tr>
       <?php endif; ?>
     <?php endforeach; ?>

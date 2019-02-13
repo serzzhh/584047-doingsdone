@@ -1,42 +1,8 @@
 <?php
   $show_complete_tasks = rand(0, 1);
-  $projects = ["Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
-  $tasks = [
-     [
-       "text" => "Собеседование в IT компании",
-       "date" => "01.12.2019",
-       "project" => "Работа",
-       "completed" => false
-     ],
-     [
-       "text" => "Выполнить тестовое задание",
-       "date" => "25.12.2019",
-       "project" => "Работа",
-       "completed" => false
-     ],
-     [
-       "text" => "Сделать задание первого раздела",
-       "date" => "21.12.2019",
-       "project" => "Учеба",
-       "completed" => true
-     ],
-     [
-       "text" => "Встреча с другом",
-       "date" => "22.12.2019",
-       "project" => "Входящие",
-       "completed" => false
-     ],
-     [
-       "text" => "Купить корм для кота",
-       "date" => "08.02.2019",
-       "project" => "Домашние дела",
-       "completed" => false
-     ],
-     [
-       "text" => "Заказать пиццу",
-       "date" => null,
-       "project" => "Домашние дела",
-       "completed" => false
-     ]
-  ];
-?>
+
+  $id = 1;
+  $sql1 = "SELECT * FROM projects WHERE id_user = ?";
+  $sql2 = "SELECT * FROM tasks WHERE id_user = ?";
+  $projects = get_res($link, $sql1, $id);
+  $tasks = get_res($link, $sql2, $id);
