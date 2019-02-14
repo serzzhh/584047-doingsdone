@@ -15,10 +15,10 @@ function include_template($name, $data) {
 
     return $result;
 }
-function count_projects($tasks, $project_name) {
+function count_projects($tasks, $project_id) {
   $count = 0;
   foreach ($tasks as $value) {
-    if ($value["project"] === $project_name) {
+    if ($value["id_project"] === $project_id) {
       $count += 1;
     }
   }
@@ -30,4 +30,14 @@ function count_hours ($date) {
   $diff = ($task_date - $cur_date) / 3600;
   return $diff;
 }
-?>
+function get_res ($link, $sql, $data = []) {
+$stmt = db_get_prepare_stmt($link, $sql, [$data]);
+  mysqli_stmt_execute($stmt);
+  if ($res = mysqli_stmt_get_result($stmt)) {
+			$res = mysqli_fetch_all($res, MYSQLI_ASSOC);
+      return $res;
+		}
+    else {
+  			print("Ошибка запроса: " . mysqli_error($link));
+  		}
+}
