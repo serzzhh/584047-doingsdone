@@ -22,8 +22,17 @@
 </div>
 
 <table class="tasks">
+  <?php if (isset($_GET["project_id"])): ?>
+   <?php $id_count = get_res($link, "SELECT COUNT(*) AS count FROM tasks WHERE id_project = ?", $_GET["project_id"]);
+    if ($id_count[0]["count"] < 1): ?>
+      <p>ошибка 404</p>
+      <?php http_response_code(404); ?>
+    <?php endif; ?>
+  <?php endif; ?>
+  <?php if (http_response_code() === 200): ?>
     <?php foreach ($tasks as $key => $value): ?>
       <?php if ($show_complete_tasks || !$value["completed"]): ?>
+        <?php if (!isset($_GET["project_id"]) || $_GET["project_id"] == $value["id_project"]): ?>
         <tr class="tasks__item task <?php if ($value["completed"]): ?>task--completed<?php endif; ?><?php if (count_hours($value["deadline"]) <= 24): ?>task--important<?php endif; ?>">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
@@ -38,6 +47,8 @@
 
             <td class="task__date"><?=$value["deadline"];?></td>
         </tr>
+        <?php endif; ?>
       <?php endif; ?>
     <?php endforeach; ?>
+  <?php endif; ?>
 </table>
