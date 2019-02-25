@@ -22,12 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     move_uploaded_file($tmp_name, $path);
 		$task['preview'] = $path;
 	}
-var_dump($_FILES['preview']['tmp_name']);
+
   if (count($errors)) {
 		$page_content = include_template('add.php', ['task' => $task, 'errors' => $errors, 'projects' => $projects]);
 	}
   else {
-    var_dump($task);
     $sql = 'INSERT INTO tasks (name, deadline, id_user, id_project, file) VALUES (?, ?, 1, ?, ?)';
 
      $stmt = db_get_prepare_stmt($link, $sql, [$task["name"], date("Y-m-d",strtotime($task["date"])), $task["project"], $task['preview']]);
