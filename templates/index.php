@@ -1,6 +1,6 @@
 <h2 class="content__main-heading">Список задач</h2>
 
-<form class="search-form" action="index.php" method="post">
+<form class="search-form" action="add.php" method="post">
   <input class="search-form__input" type="text" name="" value="" placeholder="Поиск по задачам">
 
   <input class="search-form__submit" type="submit" name="" value="Искать">
@@ -15,8 +15,7 @@
     </nav>
 
     <label class="checkbox">
-      <!--добавить сюда аттрибут "checked", если переменная $show_complete_tasks равна единице-->
-      <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_complete_tasks): ?>checked<?php endif; ?>>
+      <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_completed): ?>checked<?php endif; ?>>
       <span class="checkbox__text">Показывать выполненные</span>
     </label>
 </div>
@@ -24,12 +23,12 @@
 <table class="tasks">
   <?php if (http_response_code() === 200): ?>
     <?php foreach ($tasks as $key => $value): ?>
-      <?php if ($show_complete_tasks || !$value["completed"]): ?>
+      <?php if ($show_completed || !$value["completed"]): ?>
         <?php if (!isset($_GET["project_id"]) || $_GET["project_id"] == $value["id_project"]): ?>
         <tr class="tasks__item task <?php if ($value["completed"]): ?>task--completed<?php endif; ?><?php if (count_hours($value["deadline"]) <= 24): ?>task--important<?php endif; ?>">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
-                    <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+                    <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="<?=$value["id"];?>">
                     <span class="checkbox__text"><?=htmlspecialchars($value["name"]);?></span>
                 </label>
             </td>

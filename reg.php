@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$layout_content = include_template('layout-unauth.php', [
+$layout_content = include_template('layout.php', [
     'content'    => $page_content,
     'title'      => 'Doingsdone | Регистрация'
 ]);
