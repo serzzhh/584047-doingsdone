@@ -7,7 +7,23 @@
       http_response_code(404);
     }
   }
+  if (isset($_GET['check'])) {
+    $sql = "UPDATE tasks SET completed = NOT completed, date_complete = NOW() WHERE id = ?";
+    $stmt = db_get_prepare_stmt($link, $sql, [$_GET['task_id']]);
+    $res = mysqli_stmt_execute($stmt);
 
-  $page_content = include_template('main.php', ['tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks]);
-  $layout_content = include_template('layout.php', ['title' => "Дела в Порядке", 'content' => $page_content, 'projects' => $projects, 'tasks' => $tasks]);
-  print($layout_content);
+    if ($res) {
+      header("Location: /");
+    }
+    else {
+         print("Ошибка запроса: " . mysqli_error($link));
+    }
+  }
+  if (isset($_SESSION['user'])) {
+    $page_content = include_template('index.php', ['tasks' => $tasks, 'show_completed' => $show_completed, 'check' => $check]);
+    $layout_content = include_template('layout.php', ['title' => "Дела в Порядке", 'content' => $page_content, 'projects' => $projects, 'tasks' => $tasks]);
+    print($layout_content);
+  }
+  else {
+    header("Location: guest.php");
+  }

@@ -3,7 +3,7 @@ require_once 'init.php';
 
 $page_content = include_template('add.php', ['projects' => $projects]);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $task = $_POST;
   $errors = [];
 
@@ -27,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$page_content = include_template('add.php', ['task' => $task, 'errors' => $errors, 'projects' => $projects]);
 	}
   else {
-    $sql = 'INSERT INTO tasks (name, deadline, id_user, id_project, file) VALUES (?, ?, 1, ?, ?)';
+    $sql = 'INSERT INTO tasks (name, deadline, id_user, id_project, file) VALUES (?, ?, ?, ?, ?)';
 
-     $stmt = db_get_prepare_stmt($link, $sql, [$task["name"], date("Y-m-d",strtotime($task["date"])), $task["project"], $task['preview']]);
+     $stmt = db_get_prepare_stmt($link, $sql, [$task["name"], date("Y-m-d",strtotime($task["date"])),$_SESSION['user']['id'], $task["project"], $task['preview']]);
      $res = mysqli_stmt_execute($stmt);
 
     if ($res) {
