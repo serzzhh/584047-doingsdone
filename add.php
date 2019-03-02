@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql = 'INSERT INTO tasks (name, id_user, id_project, file) VALUES (?, ?, ?, ?)';
             $stmt = db_get_prepare_stmt($link, $sql, [$task["name"], $_SESSION['user']['id'], $task["project"], $task['preview']]);
         } else {
-            $sql = 'INSERT INTO tasks (name, id_user, id_project, file, deadline) VALUES (?, ?, ?, ?, ?)';
-            $stmt = db_get_prepare_stmt($link, $sql, [$task["name"], $_SESSION['user']['id'], $task["project"], $task['preview']], date("Y-m-d", strtotime($task["date"])));
+            $sql = 'INSERT INTO tasks (deadline, name, id_user, id_project, file) VALUES (?, ?, ?, ?, ?)';
+            $stmt = db_get_prepare_stmt($link, $sql, [date("Y-m-d", strtotime($task["date"])), $task["name"], $_SESSION['user']['id'], $task["project"], $task['preview']]);
         }
         $res = mysqli_stmt_execute($stmt);
 

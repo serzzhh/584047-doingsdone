@@ -19,7 +19,7 @@
       }
   }
   if (isset($_SESSION['user'])) {
-      $page_content = include_template('index.php', ['tasks' => $tasks, 'show_completed' => $show_completed, 'check' => $check]);
+      $page_content = include_template('index.php', ['tasks' => $tasks, 'show_completed' => $show_completed, 'check' => $check, 'sort' => $sort]);
       $layout_content = include_template('layout.php', ['title' => "Дела в Порядке", 'content' => $page_content, 'projects' => $projects, 'tasks' => $tasks]);
       print($layout_content);
   } else {

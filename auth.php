@@ -18,12 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) && !isset($errors['email'])) {
         $errors['email'] = "E-mail введён некорректно";
     }
-    $sql = "SELECT * FROM users WHERE email = '$email'";
-    $res = mysqli_query($link, $sql);
-
-    $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
-
-    if (!count($errors) and $user) {
+    $sql = "SELECT * FROM users WHERE email = ?";
+    $stmt = db_get_prepare_stmt($link, $sql, [$email]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    $user = $res->fetch_array(MYSQLI_ASSOC);
+    if (!count($errors) && isset($user)) {
         if (password_verify($form['password'], $user['password'])) {
             $_SESSION['user'] = $user;
         } else {
