@@ -1,5 +1,13 @@
 <?php
-function include_template($name, $data) {
+/**
+ * Функция-шаблонизатор, подключает переданный файл, захватывает его содержимое
+ *
+ * @param string $name путь к файлу-шаблона
+ * @param array $data массив с данными шаблона
+ * @return $result сгенерированный HTML код шаблона
+ */
+function include_template($name, $data)
+{
     $name = 'templates/' . $name;
     $result = '';
 
@@ -24,14 +32,15 @@ function include_template($name, $data) {
  *
  * @return int количество задач
  */
-function count_projects($tasks, $project_id) {
-  $count = 0;
-  foreach ($tasks as $value) {
-    if ($value["id_project"] === $project_id) {
-      $count += 1;
+function count_projects($tasks, $project_id)
+{
+    $count = 0;
+    foreach ($tasks as $value) {
+        if ($value["id_project"] === $project_id) {
+            $count += 1;
+        }
     }
-  }
-  return $count;
+    return $count;
 }
 
 /**
@@ -41,11 +50,12 @@ function count_projects($tasks, $project_id) {
  *
  * @return int количество часов
  */
-function count_hours ($date) {
-  $cur_date = strtotime(date("d.m.Y H:i"));
-  $task_date = strtotime($date);
-  $diff = ($task_date - $cur_date) / 3600;
-  return $diff;
+function count_hours($date)
+{
+    $cur_date = strtotime(date("d.m.Y H:i"));
+    $task_date = strtotime($date);
+    $diff = ($task_date - $cur_date) / 3600;
+    return $diff;
 }
 
 /**
@@ -57,14 +67,14 @@ function count_hours ($date) {
  *
  * @return array результ SQL запроса
  */
-function get_res ($link, $sql, $data = []) {
-$stmt = db_get_prepare_stmt($link, $sql, [$data]);
-  mysqli_stmt_execute($stmt);
-  if ($res = mysqli_stmt_get_result($stmt)) {
-			$res = mysqli_fetch_all($res, MYSQLI_ASSOC);
-      return $res;
-		}
-    else {
-  			print("Ошибка запроса: " . mysqli_error($link));
-  		}
+function get_res($link, $sql, $data = [])
+{
+    $stmt = db_get_prepare_stmt($link, $sql, [$data]);
+    mysqli_stmt_execute($stmt);
+    if ($res = mysqli_stmt_get_result($stmt)) {
+        $res = mysqli_fetch_all($res, MYSQLI_ASSOC);
+        return $res;
+    } else {
+        print("Ошибка запроса: " . mysqli_error($link));
+    }
 }
