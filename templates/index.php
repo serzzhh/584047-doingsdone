@@ -1,7 +1,7 @@
 <h2 class="content__main-heading">Список задач</h2>
 
-<form class="search-form" action="add.php" method="post">
-  <input class="search-form__input" type="text" name="" value="" placeholder="Поиск по задачам">
+<form class="search-form" action="index.php" method="get">
+  <input class="search-form__input" type="text" name="search" value="" placeholder="Поиск по задачам">
 
   <input class="search-form__submit" type="submit" name="" value="Искать">
 </form>
@@ -21,6 +21,9 @@
 </div>
 
 <table class="tasks">
+  <?php if (empty($tasks)): ?>
+    <p>Ничего не найдено по вашему запросу</p>
+  <?php endif; ?>
   <?php if (http_response_code() === 200): ?>
     <?php foreach ($tasks as $key => $value): ?>
       <?php if ($show_completed || !$value["completed"]): ?>

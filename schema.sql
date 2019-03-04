@@ -20,7 +20,7 @@ CREATE TABLE tasks (
   file CHAR(64),
   id_user INT NOT NULL,
   id_project INT NOT NULL,
-  INDEX (name)
+  FULLTEXT (name)
 );
 
 CREATE TABLE users (

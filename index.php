@@ -18,6 +18,16 @@
           print("Ошибка запроса: " . mysqli_error($link));
       }
   }
+  $search = $_GET['search'] ?? '';
+  if ($search) {
+      $sql = "SELECT * FROM tasks WHERE id_user = ? AND MATCH (name) AGAINST (?)";
+
+      $stmt = db_get_prepare_stmt($link, $sql, [$id, $search]);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
+
+      $tasks = mysqli_fetch_all($result, MYSQLI_ASSOC);
+  }
   if (isset($_SESSION['user'])) {
       $page_content = include_template('index.php', ['tasks' => $tasks, 'show_completed' => $show_completed, 'check' => $check, 'sort' => $sort]);
       $layout_content = include_template('layout.php', ['title' => "Дела в Порядке", 'content' => $page_content, 'projects' => $projects, 'tasks' => $tasks]);
