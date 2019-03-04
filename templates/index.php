@@ -8,10 +8,10 @@
 
 <div class="tasks-controls">
     <nav class="tasks-switch">
-      <a href="/" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
-      <a href="/" class="tasks-switch__item">Повестка дня</a>
-      <a href="/" class="tasks-switch__item">Завтра</a>
-      <a href="/" class="tasks-switch__item">Просроченные</a>
+      <a href="/" class="tasks-switch__item <?php if ($sort === ''): ?>tasks-switch__item--active <?php endif; ?>">Все задачи</a>
+      <a href="/?sort=today" class="tasks-switch__item <?php if ($sort === 'today'): ?>tasks-switch__item--active <?php endif; ?>">Повестка дня</a>
+      <a href="/?sort=tomorrow" class="tasks-switch__item <?php if ($sort === 'tomorrow'): ?>tasks-switch__item--active <?php endif; ?>">Завтра</a>
+      <a href="/?sort=expired" class="tasks-switch__item <?php if ($sort === 'expired'): ?>tasks-switch__item--active <?php endif; ?>">Просроченные</a>
     </nav>
 
     <label class="checkbox">
@@ -25,7 +25,7 @@
     <?php foreach ($tasks as $key => $value): ?>
       <?php if ($show_completed || !$value["completed"]): ?>
         <?php if (!isset($_GET["project_id"]) || $_GET["project_id"] == $value["id_project"]): ?>
-        <tr class="tasks__item task <?php if ($value["completed"]): ?>task--completed<?php endif; ?><?php if (count_hours($value["deadline"]) <= 24): ?>task--important<?php endif; ?>">
+        <tr class="tasks__item task <?php if ($value["completed"]): ?>task--completed <?php endif; ?><?php if (count_hours($value["deadline"]) <= 24): ?>task--important<?php endif; ?>">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
                     <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="<?=$value["id"];?>">

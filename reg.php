@@ -3,16 +3,12 @@ require_once 'init.php';
 
 $page_content = include_template('reg.php', []);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form = $_POST['signup'];
     $errors = [];
 
     $req_fields = ['email', 'password', 'name'];
     $email = mysqli_real_escape_string($link, $form['email']);
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $errors['email'] = "E-mail введён некорректно";
-    }
 
     foreach ($req_fields as $field) {
         if (empty($form[$field])) {
@@ -20,28 +16,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "E-mail введён некорректно";
+    } else {
+        $sql = "SELECT id FROM users WHERE email = ?";
+        $stmt = db_get_prepare_stmt($link, $sql, [$email]);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+        $count = mysqli_stmt_num_rows($stmt);
+        if ($count) {
+            $errors['email'] = 'Пользователь с этим email уже зарегистрирован';
+        }
+    }
+
     if (empty($errors)) {
-        $sql = "SELECT id FROM users WHERE email = '$email'";
-        $res = mysqli_query($link, $sql);
+        $password = password_hash($form['password'], PASSWORD_DEFAULT);
 
-        if (mysqli_num_rows($res) > 0) {
-            $errors[] = 'Пользователь с этим email уже зарегистрирован';
-        }
-        else {
-            $password = password_hash($form['password'], PASSWORD_DEFAULT);
-
-            $sql = 'INSERT INTO users ( email, name, password) VALUES (?, ?, ?)';
-            $stmt = db_get_prepare_stmt($link, $sql, [$form['email'], $form['name'], $password]);
-            $res = mysqli_stmt_execute($stmt);
-        }
-
+        $sql = 'INSERT INTO users ( email, name, password) VALUES (?, ?, ?)';
+        $stmt = db_get_prepare_stmt($link, $sql, [$form['email'], $form['name'], $password]);
+        $res = mysqli_stmt_execute($stmt);
         if ($res && empty($errors)) {
             header("Location: /");
             exit();
         }
-    }
-    else {
-      $page_content = include_template('reg.php', ['errors' => $errors, 'form' => $form]);
+    } else {
+        $page_content = include_template('reg.php', ['errors' => $errors, 'form' => $form]);
     }
 }
 

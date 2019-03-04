@@ -11,8 +11,7 @@ $con = mysqli_real_connect($link, $db['host'], $db['user'], $db['password'], $db
 mysqli_set_charset($link, "utf8");
 
 if (!$con) {
-print("Ошибка подключения: " . mysqli_connect_error());
-}
-else {
-  require_once 'data.php';
+    print("Ошибка подключения: " . mysqli_connect_error());
+} else {
+    require_once 'data.php';
 }

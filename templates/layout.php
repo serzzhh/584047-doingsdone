@@ -22,7 +22,7 @@
             </a>
 
             <div class="main-header__side">
-              <?php if(isset($_SESSION['user'])): ?>
+              <?php if (isset($_SESSION['user'])): ?>
                 <a class="main-header__side-item button button--plus open-modal" href="add.php">Добавить задачу</a>
 
                 <div class="main-header__side-item user-menu">
@@ -44,12 +44,12 @@
 
         <div class="content">
             <section class="content__side">
-              <?php if(isset($_SESSION['user'])): ?>
+              <?php if (isset($_SESSION['user'])): ?>
                 <h2 class="content__side-heading">Проекты</h2>
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                      <<?php foreach ($projects as $key => $value): ?>
+                      <?php foreach ($projects as $key => $value): ?>
                         <li class="main-navigation__list-item">
                             <a class="main-navigation__list-item-link" href="<?='?project_id=' . $value['id'];?>"><?=htmlspecialchars($value['name']);?></a>
                             <span class="main-navigation__list-item-count"><?= count_projects($tasks, $value['id']) ?></span>
@@ -82,7 +82,7 @@
 
             <p>Веб-приложение для удобного ведения списка дел.</p>
         </div>
-        <?php if(isset($_SESSION['user'])): ?>
+        <?php if (isset($_SESSION['user'])): ?>
           <a class="main-footer__button button button--plus" href="add.php">Добавить задачу</a>
         <?php endif; ?>
 
