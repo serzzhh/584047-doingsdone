@@ -21,7 +21,7 @@
 </div>
 
 <table class="tasks">
-  <?php if (empty($tasks)): ?>
+  <?php if (empty($tasks) && isset($_GET['search'])): ?>
     <p>Ничего не найдено по вашему запросу</p>
   <?php endif; ?>
   <?php if (http_response_code() === 200): ?>
