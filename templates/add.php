@@ -13,13 +13,17 @@
   </div>
 
   <div class="form__row">
+    <?php $classname = isset($errors['project']) ? "form__input--error" : "";?>
     <label class="form__label" for="project">Проект</label>
 
-    <select class="form__input form__input--select" name="project" id="project">
+    <select class="form__input form__input--select <?=$classname;?>" name="project" id="project">
       <?php foreach ($projects as $project): ?>
-      <option value="<?=$project["id"] ?>"><?=$project["name"] ?></option>
+      <option value="<?=$project["name"] ?>"><?=$project["name"] ?></option>
       <?php endforeach; ?>
     </select>
+    <?php if (isset($errors['project'])): ?>
+    <p class="form__message"><?=$errors['project'] ?></p>
+    <?php endif; ?>
   </div>
 
   <div class="form__row">

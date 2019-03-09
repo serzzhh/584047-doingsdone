@@ -28,16 +28,17 @@
     <?php foreach ($tasks as $key => $value): ?>
       <?php if ($show_completed || !$value["completed"]): ?>
         <?php if (!isset($_GET["project_id"]) || $_GET["project_id"] == $value["id_project"]): ?>
-        <tr class="tasks__item task <?php if ($value["completed"]): ?>task--completed <?php endif; ?><?php if (count_hours($value["deadline"]) <= 24): ?>task--important<?php endif; ?>">
+        <tr class="tasks__item task <?php if ($value["completed"]): ?>task--completed <?php endif; ?><?php if (count_hours($value["deadline"]) <= 24 && !is_null($value["deadline"])): ?>task--important<?php endif; ?>">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
                     <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="<?=$value["id"];?>">
                     <span class="checkbox__text"><?=htmlspecialchars($value["name"]);?></span>
                 </label>
             </td>
-
             <td class="task__file">
-                <a class="download-link" href="<?=$value["file"];?>"><?=$value["file"];?></a>
+              <?php if (!empty($value["file"])): ?>
+                <a class="download-link" href="<?=$value["file"]; ?>"></a>
+              <?php endif; ?>
             </td>
 
             <td class="task__date"><?=isset($value["deadline"]) ? date("d.m.Y", strtotime($value["deadline"])) : "";?></td>

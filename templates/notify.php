@@ -8,10 +8,10 @@
 </head>
 <body>
 <?php $value = count($tasks_message) > 1 ? "запланированы задачи" : "запланирована задача"; ?>
-<p>Уважаемый, <?=$name_user?>. У вас <?=$value ?></p>
+<p>Уважаемый, <?=htmlspecialchars($name_user)?>. У вас <?=$value ?></p>
 
     <?php foreach ($tasks_message as $task): ?>
-        <p><?=$task['name'] ?> на <?=date("d.m.Y", strtotime($task['deadline'])) ?> </p>
+        <p><?=htmlspecialchars($task['name']) ?> на <?=date("d.m.Y", strtotime($task['deadline'])) ?> </p>
     <?php endforeach; ?>
 </body>
 </html>

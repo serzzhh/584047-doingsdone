@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="user-menu__data">
-                        <p><?=$_SESSION['user']['name']?></p>
+                        <p><?=htmlspecialchars($_SESSION['user']['name'])?></p>
 
                         <a href="guest.php">Выйти</a>
                     </div>

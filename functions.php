@@ -36,7 +36,7 @@ function count_projects($tasks, $project_id)
 {
     $count = 0;
     foreach ($tasks as $value) {
-        if ($value["id_project"] === $project_id) {
+        if ($value["id_project"] === $project_id && !$value["completed"]) {
             $count += 1;
         }
     }
