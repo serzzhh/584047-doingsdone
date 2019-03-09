@@ -3,26 +3,32 @@ require_once 'init.php';
 if (isset($_SESSION['user'])) {
     $page_content = include_template('add.php', ['projects' => $projects]);
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name']) && isset($_POST['date'])) {
         $task = $_POST;
         $errors = [];
         $task_name = trim($task['name']);
 
         if (empty($task_name)) {
             $errors['name'] = 'Это поле надо заполнить';
+        } elseif (iconv_strlen($task_name) > 128) {
+            $errors['name'] = 'Введите не более 128 символов';
         }
 
         if (strtotime($task["date"]) < strtotime(date("d.m.Y")) && !empty($task["date"])) {
             $errors['date'] = 'Дата должна быть больше или равна текущей';
         }
 
-        $index = array_search($task["project"], array_column($projects, 'name'));
-        if ( $index !== false) {
-            $task["project"] = $projects[$index]['id'];
+        if (!isset($task['project'])) {
+            $errors['project'] = 'Добавьте проект';
         } else {
-            $errors['project'] = 'Выберите проект из списка';
+          $index = array_search($task["project"], array_column($projects, 'name'));
+          if ($index !== false) {
+              $task["project"] = $projects[$index]['id'];
+          } else {
+              $errors['project'] = 'Выберите проект из списка';
+          }
         }
-        
+
         if (count($errors)) {
             $page_content = include_template('add.php', ['task' => $task, 'errors' => $errors, 'projects' => $projects]);
         } else {

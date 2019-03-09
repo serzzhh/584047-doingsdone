@@ -4,7 +4,7 @@ require_once 'init.php';
 if (isset($_SESSION['user'])) {
     $page_content = include_template('project.php', []);
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'])) {
         $form = $_POST;
         $errors = [];
         $project_name = trim($form['name']);
@@ -12,6 +12,8 @@ if (isset($_SESSION['user'])) {
 
         if (empty($project_name)) {
             $errors['name'] = 'Это поле надо заполнить';
+        } elseif (iconv_strlen($project_name) > 50) {
+            $errors['name'] = 'Введите не более 50 символов';
         } else {
             $sql = 'SELECT name FROM projects WHERE name = ? && id_user = ? LIMIT 1';
             $stmt = db_get_prepare_stmt($link, $sql, [$project_name, $id_user]);
