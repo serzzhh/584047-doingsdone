@@ -1,6 +1,9 @@
 <?php
 require_once 'init.php';
 if (isset($_SESSION['user'])) {
+    $show_completed =  isset($_GET['show_completed']) ? $_GET['show_completed'] : 0;
+    $check =  isset($_GET['check']) ? $_GET['check'] : 0;
+    
     if (isset($_GET["project_id"])) {
         $id_count = get_res($link, "SELECT id_project FROM tasks WHERE id_project = ? LIMIT 1", $_GET["project_id"]);
         if (!$id_count) {
