@@ -1,0 +1,7 @@
+{
+    "name": "serzzhh/doingsdone.local",
+    "require": {},
+    "require-dev": {
+        "swiftmailer/swiftmailer": "^6.1"
+    }
+}
