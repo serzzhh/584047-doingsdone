@@ -16,9 +16,13 @@ if (isset($_SESSION['user'])) {
             $errors['date'] = 'Дата должна быть больше или равна текущей';
         }
 
-        if (!in_array($task["project"], array_column($projects, 'name'))) {
+        $index = array_search($task["project"], array_column($projects, 'name'));
+        if ( $index !== false) {
+            $task["project"] = $projects[$index]['id'];
+        } else {
             $errors['project'] = 'Выберите проект из списка';
         }
+        
         if (count($errors)) {
             $page_content = include_template('add.php', ['task' => $task, 'errors' => $errors, 'projects' => $projects]);
         } else {
