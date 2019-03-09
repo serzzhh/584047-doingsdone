@@ -11,7 +11,7 @@ if (isset($_SESSION['user'])) {
     $sql_tomorrow = "SELECT * FROM tasks WHERE id_user = ? AND TO_DAYS(NOW()) + 1 - TO_DAYS(deadline) = 0";
     $sql_expired = "SELECT * FROM tasks WHERE id_user = ? AND completed = 0 AND TO_DAYS(NOW()) - TO_DAYS(deadline) > 0";
     $projects = get_res($link, $sql1, $id);
-    $tasks = get_res($link, $sql_expired, $id);
+    $tasks_all = get_res($link, $sql2, $id);
     switch ($sort) {
         case 'today': {
             $tasks = get_res($link, $sql_today, $id);
@@ -26,6 +26,6 @@ if (isset($_SESSION['user'])) {
             break;
         }
         default:
-            $tasks = get_res($link, $sql2, $id);
+            $tasks = $tasks_all;
     }
 }

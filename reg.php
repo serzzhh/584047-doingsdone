@@ -6,6 +6,7 @@ $page_content = include_template('reg.php', []);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form = $_POST['signup'];
     $errors = [];
+    $form['name'] = trim($form['name']);
 
     $req_fields = ['email', 'password', 'name'];
     $email = mysqli_real_escape_string($link, $form['email']);
