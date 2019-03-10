@@ -1,8 +1,10 @@
 <?php
 require_once 'init.php';
+if (isset($_SESSION['user'])) {
+header("Location: /");
+}
 
-$_SESSION = [];
-
+$page_content = include_template('auth.php', []);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = [];
     $form = [];
@@ -40,16 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $page_content = include_template('auth.php', ['form' => $form, 'errors' => $errors]);
     } else {
         header("Location: /");
-        exit();
-    }
-} else {
-    if (isset($_SESSION['user'])) {
-        $page_content = include_template('main.php', ['user' => $_SESSION['user']]);
-    } else {
-        $page_content = include_template('auth.php', []);
     }
 }
-
 
 $layout_content = include_template('layout.php', [
     'content'    => $page_content,

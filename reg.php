@@ -1,5 +1,8 @@
 <?php
 require_once 'init.php';
+if (isset($_SESSION['user'])) {
+header("Location: /");
+}
 
 $page_content = include_template('reg.php', []);
 
@@ -46,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = db_get_prepare_stmt($link, $sql, [$form['email'], $form['name'], $password]);
         $res = mysqli_stmt_execute($stmt);
         if ($res) {
-            header("Location: /");
+            header("Location: auth.php");
             exit();
         }
     } else {
