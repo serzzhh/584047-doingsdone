@@ -46,7 +46,5 @@
         <?php endif; ?>
       <?php endif; ?>
     <?php endforeach; ?>
-  <?php else: ?>
-    <p>Ошибка 404</p>
   <?php endif; ?>
 </table>

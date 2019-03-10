@@ -6,7 +6,7 @@
         $value = isset($form['email']) ? $form['email'] : ""; ?>
     <label class="form__label" for="email">E-mail <sup>*</sup></label>
 
-    <input class="form__input <?=$classname ?>" type="text" name="signup[email]" id="email" value="<?=$value ?>" placeholder="Введите e-mail">
+    <input class="form__input <?=$classname ?>" type="text" name="email" id="email" value="<?=$value ?>" placeholder="Введите e-mail">
     <?php if (isset($errors['email'])): ?>
     <p class="form__message"><?=$errors['email'] ?></p>
     <?php endif; ?>
@@ -17,7 +17,7 @@
         $value = isset($form['password']) ? $form['password'] : ""; ?>
     <label class="form__label" for="password">Пароль <sup>*</sup></label>
 
-    <input class="form__input <?=$classname ?>" type="password" name="signup[password]" id="password" value="<?=$value ?>" placeholder="Введите пароль">
+    <input class="form__input <?=$classname ?>" type="password" name="password" id="password" value="<?=$value ?>" placeholder="Введите пароль">
     <?php if (isset($errors['password'])): ?>
     <p class="form__message"><?=$errors['password'] ?></p>
     <?php endif; ?>
@@ -28,7 +28,7 @@
         $value = isset($form['name']) ? $form['name'] : ""; ?>
     <label class="form__label" for="name">Имя <sup>*</sup></label>
 
-    <input class="form__input <?=$classname ?>" type="text" name="signup[name]" id="name" value="<?=$value ?>" placeholder="Введите имя">
+    <input class="form__input <?=$classname ?>" type="text" name="name" id="name" value="<?=$value ?>" placeholder="Введите имя">
     <?php if (isset($errors['name'])): ?>
     <p class="form__message"><?=$errors['name'] ?></p>
     <?php endif; ?>

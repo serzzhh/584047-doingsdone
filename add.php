@@ -3,30 +3,32 @@ require_once 'init.php';
 if (isset($_SESSION['user'])) {
     $page_content = include_template('add.php', ['projects' => $projects]);
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name']) && isset($_POST['date'])) {
-        $task = $_POST;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['date'])) {
+        $task = [];
         $errors = [];
-        $task_name = trim($task['name']);
+        $task['date'] = $_POST['date'];
 
-        if (empty($task_name)) {
-            $errors['name'] = 'Это поле надо заполнить';
-        } elseif (iconv_strlen($task_name) > 128) {
+        if (isset($_POST['name']) && !empty(trim($_POST['name']))) {
+            $task['name'] = trim($_POST['name']);
+        } else {
+            $errors['name'] = 'Это поле необходимо заполнить';
+        }
+
+        if (!isset($errors['name']) && iconv_strlen($task['name']) > 128) {
             $errors['name'] = 'Введите не более 128 символов';
         }
 
-        if (strtotime($task["date"]) < strtotime(date("d.m.Y")) && !empty($task["date"])) {
+        if (!empty($task['date']) && strtotime($task['date']) < strtotime(date("d.m.Y"))) {
             $errors['date'] = 'Дата должна быть больше или равна текущей';
         }
 
-        if (!isset($task['project'])) {
-            $errors['project'] = 'Добавьте проект';
-        } else {
-          $index = array_search($task["project"], array_column($projects, 'name'));
+        if (isset($_POST['project'])) {
+          $index = array_search($_POST["project"], array_column($projects, 'name'));
           if ($index !== false) {
               $task["project"] = $projects[$index]['id'];
-          } else {
-              $errors['project'] = 'Выберите проект из списка';
           }
+        } else {
+          $task["project"] = 0;
         }
 
         if (count($errors)) {
@@ -43,10 +45,10 @@ if (isset($_SESSION['user'])) {
             }
             if (empty($task['date'])) {
                 $sql = 'INSERT INTO tasks (name, id_user, id_project, file) VALUES (?, ?, ?, ?)';
-                $stmt = db_get_prepare_stmt($link, $sql, [$task_name, $_SESSION['user']['id'], $task["project"], $task['preview']]);
+                $stmt = db_get_prepare_stmt($link, $sql, [$task['name'], $_SESSION['user']['id'], $task["project"], $task['preview']]);
             } else {
                 $sql = 'INSERT INTO tasks (deadline, name, id_user, id_project, file) VALUES (?, ?, ?, ?, ?)';
-                $stmt = db_get_prepare_stmt($link, $sql, [date("Y-m-d", strtotime($task["date"])), $task_name, $_SESSION['user']['id'], $task["project"], $task['preview']]);
+                $stmt = db_get_prepare_stmt($link, $sql, [date("Y-m-d", strtotime($task["date"])), $task['name'], $_SESSION['user']['id'], $task["project"], $task['preview']]);
             }
             $res = mysqli_stmt_execute($stmt);
 

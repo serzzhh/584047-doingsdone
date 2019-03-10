@@ -3,29 +3,28 @@ require_once 'init.php';
 
 $page_content = include_template('reg.php', []);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup']['email']) && isset($_POST['signup']['name']) && isset($_POST['signup']['password'])) {
-    $form = $_POST['signup'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = [];
-    $form['name'] = trim($form['name']);
-
+    $form = [];
     $req_fields = ['email', 'password', 'name'];
-    $form['email'] = trim(mysqli_real_escape_string($link, $form['email']));
 
     foreach ($req_fields as $field) {
-        if (empty($form[$field])) {
-            $errors[$field] = "Это поле надо заполнить";
+        if (isset($_POST[$field]) && !empty(trim($_POST[$field]))) {
+            $form[$field] = trim($_POST[$field]);
+        } else {
+            $errors[$field] = 'Это поле необходимо заполнить';
         }
     }
 
-    if (iconv_strlen($form['name']) > 64 && !isset($errors['name'])) {
+    if (!isset($errors['name']) && iconv_strlen($form['name']) > 64) {
         $errors['name'] = 'Введите не более 64 символов';
     }
 
-    if (iconv_strlen($form['email']) > 128) {
+    if (!isset($errors['email']) && iconv_strlen($form['email']) > 128) {
         $errors['email'] = 'Введите не более 128 символов';
-    } elseif (!filter_var($form['email'], FILTER_VALIDATE_EMAIL) && !isset($errors['email'])) {
+    } elseif (!isset($errors['email']) && !filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "E-mail введён некорректно";
-    } else {
+    } elseif (!isset($errors['email'])) {
         $sql = "SELECT id FROM users WHERE email = ?";
         $stmt = db_get_prepare_stmt($link, $sql, [$form['email']]);
         mysqli_stmt_execute($stmt);
@@ -36,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup']['email']) &&
         }
     }
 
-    if (iconv_strlen($form['password']) > 64 || iconv_strlen($form['password']) < 6) {
+    if (!isset($errors['password']) && (iconv_strlen($form['password']) > 64 || iconv_strlen($form['password']) < 6)) {
         $errors['password'] = 'Введите от 6 до 64 символов';
     }
 

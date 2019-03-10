@@ -3,21 +3,21 @@ require_once 'init.php';
 
 $_SESSION = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_POST['password'])) {
-    $form = $_POST;
-
-    $required = ['email', 'password'];
-    $form['email'] = trim(mysqli_real_escape_string($link, $form['email']));
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = [];
-    foreach ($required as $field) {
-        if (empty($form[$field])) {
-            $errors[$field] = 'Это поле надо заполнить';
+    $form = [];
+    $req_fields = ['email', 'password'];
+    foreach ($req_fields as $field) {
+        if (isset($_POST[$field]) && !empty(trim($_POST[$field]))) {
+            $form[$field] = trim($_POST[$field]);
+        } else {
+            $errors[$field] = 'Это поле необходимо заполнить';
         }
     }
 
-    if (!filter_var($form['email'], FILTER_VALIDATE_EMAIL) && !isset($errors['email'])) {
+    if (!isset($errors['email']) && !filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "E-mail введён некорректно";
-    } else {
+    } elseif (!isset($errors['email'])) {
         $sql = "SELECT * FROM users WHERE email = ?";
         $stmt = db_get_prepare_stmt($link, $sql, [$form['email']]);
         mysqli_stmt_execute($stmt);
