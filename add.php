@@ -38,6 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['date'])) {
     } else {
         if (isset($_FILES['preview']) && is_uploaded_file($_FILES['preview']['tmp_name'])) {
             $tmp_name = $_FILES['preview']['tmp_name'];
+            if (!is_dir('uploads/')) {
+                mkdir('uploads/');
+            }
             $path = 'uploads/' . uniqid() . $_FILES['preview']['name'];
 
             move_uploaded_file($tmp_name, $path);
